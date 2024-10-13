@@ -1,6 +1,16 @@
-Projeto C-02 
-Aluno: Alan de Souza Maximiano da Silva 
-RM: 557088
+## CP02 - Cyber - Ransomeware
+## Aluno: Alan de Souza Maximiano da Silva 
+## RM: 557088
+
+### Objetivo:
+### Criar um Ransomware utilizando Python
+### O código deve ser capaz de:
+### • Criptografar uma pasta alvo
+### • Exibir uma mensagem em tela informando do ataque
+### • Salvar a chave de criptografia em um arquivo denominado "key.rans" na mesma
+### pasta dos arquivos criptografados
+### • Na tela informando o ataque deve existir um campo para inserir a chave e descriptografar os arquivos
+### • Realizar a descriptografia dos arquivos na pasta após a chave ser inserida
 
 # Ransomware Simulado
 
