@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ransomware Simulado</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos para o corpo da página */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;  /* Cor de fundo */
+            text-align: center;  /* Centraliza o texto */
+            padding: 50px;  /* Espaçamento ao redor do conteúdo */
+        }
+
+        /* Estilos para o contêiner principal */
+        .container {
+            background-color: white;  /* Cor de fundo do contêiner */
+            padding: 20px;  /* Espaçamento interno */
+            border-radius: 10px;  /* Cantos arredondados */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Sombra */
+            max-width: 800px;  /* Largura máxima */
+            margin: auto;  /* Centraliza o contêiner */
+        }
+
+        h1 {
+            color: red;  /* Cor do título */
+            font-size: 24px;  /* Tamanho da fonte */
+        }
+
+        /* Estilos para a seção de exibição */
+        .display-section {
+            display: flex;  /* Usando flexbox para layout */
+            justify-content: space-around;  /* Espaçamento entre itens */
+            align-items: center;  /* Alinhamento vertical dos itens */
+        }
+
+        /* Estilos para a caixa de texto */
+        .text-box {
+            width: 300px;  /* Largura fixa */
+            height: 300px;  /* Altura fixa */
+            overflow-y: scroll;  /* Adiciona rolagem vertical */
+            border: 1px solid #ccc;  /* Borda */
+            padding: 10px;  /* Espaçamento interno */
+            background-color: #f9f9f9;  /* Cor de fundo */
+        }
+
+        /* Estilos para campos de entrada e botões */
+        input[type="text"], button {
+            padding: 10px;  /* Espaçamento interno */
+            margin: 10px;  /* Margem externa */
+            width: 100%;  /* Largura total */
+            font-size: 16px;  /* Tamanho da fonte */
+            box-sizing: border-box;  /* Inclui bordas e preenchimento na largura total */
+        }
+
+        /* Estilos para o botão verde */
+        button.green {
+            background-color: #28a745;  /* Cor de fundo */
+            color: white;  /* Cor do texto */
+            border: none;  /* Sem borda */
+            cursor: pointer;  /* Cursor de mão ao passar o mouse */
+            border-radius: 5px;  /* Cantos arredondados */
+        }
+
+        /* Estilos para o botão laranja */
+        button.orange {
+            background-color: #ff9800;  /* Cor de fundo */
+            color: white;  /* Cor do texto */
+            border: none;  /* Sem borda */
+            cursor: pointer;  /* Cursor de mão ao passar o mouse */
+            border-radius: 5px;  /* Cantos arredondados */
+        }
+
+        /* Efeito de hover para os botões */
+        button:hover {
+            opacity: 0.9;  /* Reduz a opacidade ao passar o mouse */
+        }
+
+        /* Estilo para alertas */
+        .alert {
+            margin-top: 20px;  /* Margem superior */
+        }
+
+        /* Estilos para a entrada de telefone */
+        .phone-input {
+            display: flex;  /* Usando flexbox para layout */
+            justify-content: center;  /* Centraliza o conteúdo */
+            align-items: center;  /* Alinha verticalmente */
+            margin-bottom: 10px;  /* Margem inferior */
+        }
+
+        .phone-input span {
+            margin-right: 10px;  /* Margem à direita do span */
+        }
+
+        /* Ajustando a imagem do GIF descriptografado */
+        #encrypted-image {
+            width: 200px; /* Tamanho do GIF */
+            height: 200px; /* Tamanho do GIF */
+        }
+
+        /* Ajustando a imagem do ícone */
+        #icon-image {
+            display: none; /* Esconde o ícone inicialmente */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Atenção! Seus arquivos foram sequestrados!</h1>
+        <h2>Faça o pagamento em BitCoins</h2>
+        <p>Após o pagamento, você receberá a chave para descriptografar seus arquivos:</p>
+
+        <!-- Formulário para inserir a chave de descriptografia -->
+        <form id="decrypt-form">
+            <input type="text" name="key" id="key" placeholder="Insira a chave de descriptografia">
+            <button type="submit" class="green">Descriptografar</button>
+        </form>
+
+        <div class="display-section">
+            <div>
+                <img src="{{ url_for('static', filename='trava.png') }}" id="icon-image" alt="Ícone de trava">
+                <img src="" id="encrypted-image" alt="GIF Descriptografado"> <!-- GIF descriptografado exibido aqui -->
+                <p>Fotos criptografadas</p>
+            </div>
+            <div class="text-box" id="encrypted-text">
+                O documento está criptografado. Insira a chave para descriptografá-lo.
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-danger">
+              {% for message in messages %}
+                <p>{{ message }}</p> <!-- Exibe mensagens de erro -->
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <h2>Após o pagamento, insira seu número de telefone para receber a chave:</h2>
+        <form method="POST" action="/send_key">
+            <div class="phone-input">
+                <span>+55</span>
+                <input type="text" id="phone_number" name="phone_number" placeholder="Insira seu número">
+            </div>
+            <button type="submit" class="orange">Paguei, envie a chave</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para lidar com o envio do formulário de descriptografia
+        document.getElementById('decrypt-form').onsubmit = async function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+            const key = document.getElementById('key').value; // Obtém a chave inserida
+
+            // Envia a chave para a rota de descriptografia
+            const response = await fetch('/decrypt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: key }) // Converte a chave para JSON
+            });
+
+            const result = await response.json(); // Recebe a resposta como JSON
+
+            if (result.success) {
+                document.getElementById('encrypted-text').innerText = result.decrypted_text; // Exibe o texto descriptografado
+                // Exibir o GIF descriptografado
+                document.getElementById('encrypted-image').src = "{{ url_for('static', filename='descriptografado.gif') }}"; // Referencia a imagem descriptografada
+                document.getElementById('encrypted-image').style.display = 'block'; // Exibe a imagem do GIF
+                document.getElementById('icon-image').style.display = 'none'; // Esconde o ícone
+            } else {
+                alert('Chave incorreta ou erro na descriptografia'); // Alerta em caso de erro
+            }
+        };
+    </script>
+</body>
+</html>
