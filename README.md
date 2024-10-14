@@ -3,7 +3,7 @@
 ## RM: 557088
 
 ### Objetivo:
-### Criar um Ransomware utilizando Python
+### Criar uma simulação de Ransomware utilizando Python
 ### O código deve ser capaz de:
 ### • Criptografar uma pasta alvo
 ### • Exibir uma mensagem em tela informando do ataque
