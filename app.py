@@ -9,9 +9,9 @@ app = Flask(__name__)
 app.secret_key = "super_secret_key"  # Chave secreta para sessões
 
 # Credenciais do Twilio para envio de SMS
-account_sid = 'AC73b2449c8d67da3179fa26d160f94925'
-auth_token = 'bf6f793c1bc86c2676307f06703fba18'
-twilio_phone_number = '+19289853998'
+account_sid = 'xxxxxxxxxxx'
+auth_token = 'xxxxxxxxx'
+twilio_phone_number = 'xxxxxxx'
 
 client = Client(account_sid, auth_token)  # Inicializa o cliente Twilio
 
